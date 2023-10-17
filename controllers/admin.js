@@ -199,12 +199,14 @@ async function addTopic(req, res) {
 
         let incomingModuleName = req.body.moduleName;
         let incomingTopicName = req.body.topicName;
+        let incomingCourseName = req.body.userName;
 
         const module = await LogicpoolModules.find({moduleName: incomingModuleName});
 
         if(module.length > 0) {
 
             const newTopic = new LogicpoolModuleTopics({
+                courseName: incomingCourseName,
                 moduleName: incomingModuleName,
                 topicName: incomingTopicName
             });

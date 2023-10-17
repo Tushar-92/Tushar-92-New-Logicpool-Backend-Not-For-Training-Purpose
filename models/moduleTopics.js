@@ -3,6 +3,11 @@ const Schema = mongoose.Schema;
 
 const LogicpoolModuleTopicsSchema = new Schema ({
 
+  courseName: {
+    type: String ,
+    required: true,
+  },
+
   moduleName: {
     type: String ,
     required: true,
