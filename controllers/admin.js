@@ -247,6 +247,7 @@ async function getTopic(req, res) {
 async function updateTopic(req, res) {
     try {
 
+        let incomingCourseName = req.body.userName;
         let incomingModuleName = req.body.moduleName;
         let incomingTopicName = req.body.topicName;
         
@@ -255,6 +256,7 @@ async function updateTopic(req, res) {
             { _id : req.params.id },
 
             {
+                courseName: incomingCourseName,
                 moduleName: incomingModuleName,
                 topicName: incomingTopicName
             },
