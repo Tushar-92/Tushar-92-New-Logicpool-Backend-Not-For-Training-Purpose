@@ -37,5 +37,16 @@ router.put('/updateTopic/:id' , adminController.updateTopic);
 router.delete('/deleteTopic/:id' , adminController.deleteTopic);
 
 
+////End Points For Batches
+router.post('/addBatch' , adminController.addBatch);
+
+router.get('/getAllBatch' , adminController.getAllBatch);
+
+router.put('/updateBatch/:id' , adminController.updateBatch);
+
+router.delete('/deleteBatch/:id' , adminController.deleteBatch);
+
+
+
 
 module.exports = router;

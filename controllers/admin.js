@@ -2,6 +2,7 @@
 const LogicpoolCourses = require('../models/courses');
 const LogicpoolModules = require('../models/modules');
 const LogicpoolModuleTopics = require('../models/moduleTopics');
+const LogicpoolBatches = require('../models/batches');
 // const bcrypt = require('bcrypt');
 // const jwt = require('jsonwebtoken');
 
@@ -23,9 +24,9 @@ async function addCourse(req, res) {
         console.log("New Course Added");
         res.status(201).json({message: "New Course Added Successfully" , status: "true"});
 
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({Message: error.message});
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({Message: err.message});
     }
 }
 
@@ -283,6 +284,96 @@ async function deleteTopic(req, res) {
     }
 }
 
+//For Batches
+
+async function addBatch(req, res) {
+    try {
+        let incomingBatchName = req.body.name;
+        let incomingCourseName = req.body.course;
+        let incomingStartingDateOfBatch = req.body.startDate;
+        let incomingEndingDateOfBatch = req.body.endDate;
+
+        const newBatch = new LogicpoolBatches({
+            name: incomingBatchName,
+            course: incomingCourseName,
+            startDate: incomingStartingDateOfBatch,
+            endDate: incomingEndingDateOfBatch
+        });
+
+        await newBatch.save();
+        console.log('New Batch Added');
+        res.status(201).json({message: `New Batch Created Successfully For ${incomingCourseName} Course` , status: "true"});
+        
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({Message: err.message});
+    }
+}
+
+async function getAllBatch(req, res) {
+    try {
+
+        let incomingCourseName = req.body.course;
+
+        let allBatches = await LogicpoolBatches.find({course: incomingCourseName}); //This will return all available batches
+
+        if(allBatches.length > 0) return res.status(200).json({allBatches , status: "true"});
+        else return res.status(404).json({message: 'No Batch Available' , status: "false"});
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({message: `${err.message}`});
+        
+    }
+}
+
+async function getBatch(req, res) {
+    
+}
+
+async function updateBatch(req, res) {
+    try {
+
+        let incomingBatchName = req.body.name;
+        let incomingCourseName = req.body.course;
+        let incomingStartingDateOfBatch = req.body.startDate;
+        let incomingEndingDateOfBatch = req.body.endDate;
+        
+
+        let updatedBatch = await LogicpoolBatches.findByIdAndUpdate(
+            { _id : req.params.id },
+
+            {
+                name: incomingBatchName,
+                course: incomingCourseName,
+                startDate: incomingStartingDateOfBatch,
+                endDate: incomingEndingDateOfBatch
+            },
+
+            {new: true}
+        );
+
+        console.log(updatedBatch);
+        res.status(200).json({updatedBatch , status: true , message: 'Batch Updated Successfully'});
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({message: `${err.message}`});
+    }
+}
+
+async function deleteBatch(req, res) {
+    try {
+        await LogicpoolBatches.deleteOne({ _id : req.params.id});
+        console.log(`Batch _id: ${req.params.id} is now deleted from the database`);
+        res.status(200).json({message: `Batch _id: ${req.params.id} is now deleted from the database`});        
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({message: `${err.message}`});
+    }
+}
+
+
+
 
 
 
@@ -307,7 +398,20 @@ module.exports = {
     addTopic,
     getTopic,
     updateTopic,
-    deleteTopic
+    deleteTopic,
+
+    //Batches
+    addBatch,
+    getBatch,
+    getAllBatch,
+    updateBatch,
+    deleteBatch,
+
+    //Students
+
+
+    //Trainers
+
 
 
 

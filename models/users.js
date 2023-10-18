@@ -11,11 +11,16 @@ const LogicpoolUsersSchema = new Schema ({
 
   Role_Id: {
     type: String ,
-    required: true,
+    required: true
   },
 
   password: {
     type: String,
+    required: true
+  },
+
+  status: {
+    type: Boolean,
     required: true
   }
 
