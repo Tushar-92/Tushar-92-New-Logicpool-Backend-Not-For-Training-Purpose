@@ -198,10 +198,10 @@ async function deleteModule(req , res) {
 async function addTopic(req, res) {
     try {
 
+        let incomingCourseName = req.body.courseName;
         let incomingModuleName = req.body.moduleName;
         let incomingTopicName = req.body.topicName;
-        let incomingCourseName = req.body.userName;
-
+        
         const module = await LogicpoolModules.find({moduleName: incomingModuleName});
 
         if(module.length > 0) {
@@ -248,7 +248,7 @@ async function getTopic(req, res) {
 async function updateTopic(req, res) {
     try {
 
-        let incomingCourseName = req.body.userName;
+        let incomingCourseName = req.body.courseName;
         let incomingModuleName = req.body.moduleName;
         let incomingTopicName = req.body.topicName;
         
