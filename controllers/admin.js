@@ -313,12 +313,10 @@ async function addBatch(req, res) {
 async function getAllBatch(req, res) {
     try {
 
-        let incomingCourseName = req.body.course;
+        let allAvailableBatches = await LogicpoolBatches.find(); //This will return all available batches of all course
 
-        let allBatches = await LogicpoolBatches.find({course: incomingCourseName}); //This will return all available batches
-
-        if(allBatches.length > 0) return res.status(200).json({allBatches , status: "true"});
-        else return res.status(404).json({message: 'No Batch Available' , status: "false"});
+        if(allAvailableBatches.length > 0) return res.status(200).json({allAvailableBatches , status: "true"});
+        else return res.status(404).json({message: 'No Batches Available in the Database' , status: "false"});
 
     } catch (err) {
         console.log(err);
@@ -327,8 +325,21 @@ async function getAllBatch(req, res) {
     }
 }
 
-async function getBatch(req, res) {
-    
+async function getBatch(req, res) { //This method will return batches available for a particular course
+    try {
+
+        let incomingCourseName = req.body.course;
+
+        let batches = await LogicpoolBatches.find({course: incomingCourseName}); //This will return all available batches for the required course
+
+        if(batches.length > 0) return res.status(200).json({batches , status: "true"});
+        else return res.status(404).json({message: `No Batches Available for the ${incomingCourseName} course in the Database`  , status: "false"});
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({message: `${err.message}`});
+        
+    }
 }
 
 async function updateBatch(req, res) {
