@@ -245,6 +245,21 @@ async function getTopic(req, res) {
     }
 }
 
+async function getAllTopic(req, res) {
+
+    try {
+                
+        let allTopics = await LogicpoolModuleTopics.find();
+        
+        if(allTopics.length > 0) return res.status(200).json({allTopics , status: "true"});
+        else return res.status(404).json({message: 'No Topics Available in Database for any course' , status: "false"});
+               
+    }catch (err) {
+        console.log(err);
+        res.status(500).json({message: `${err.message}`});
+    }
+}
+
 async function updateTopic(req, res) {
     try {
 
@@ -408,6 +423,7 @@ module.exports = {
     //Module Topics
     addTopic,
     getTopic,
+    getAllTopic,
     updateTopic,
     deleteTopic,
 

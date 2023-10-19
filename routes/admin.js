@@ -32,6 +32,8 @@ router.post('/addTopic' , adminController.addTopic);
 
 router.get('/getTopic' , adminController.getTopic);
 
+router.get('/getAllTopic' , adminController.getAllTopic);
+
 router.put('/updateTopic/:id' , adminController.updateTopic);
 
 router.delete('/deleteTopic/:id' , adminController.deleteTopic);
