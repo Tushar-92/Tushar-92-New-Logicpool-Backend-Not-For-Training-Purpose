@@ -3,49 +3,46 @@ const Schema = mongoose.Schema;
 
 const LogicpoolStudentsSchema = new Schema ({
 
-  First_Name: {
+  firstName: {
     type: String ,
     required: true,
   },
 
-  Last_Name: {
+  lastName: {
     type: String ,
     required: true,
   },
 
-  Email_Id: {
+  emailId: {
     type: String ,
     required: true,
     unique: true
   },
 
-  Batch: {
+  contactNumber: {
     type: String ,
-  }, 
-
-  Course: {
-    type: String ,
+    required: true,
   },
 
-  Role_Id: {
+  batch: {
     type: String ,
+    required: true,
   }, 
 
-  Is_Active: {
+  course: {
+    type: String ,
+    required: true,
+  },
+
+  // Role_Id: {
+  //   type: Number ,
+  // }, 
+
+  status: { // active or not
     type: Boolean,
     required: true,
   },
-
-  Contact_Number: {
-    type: String ,
-    required: true,
-  },
-
-  // Address: {
-  //   type: String ,
-  //   required: true,
-  // },
-
+  
 });
 
 const LogicpoolStudents = mongoose.model("LogicpoolStudents" , LogicpoolStudentsSchema )

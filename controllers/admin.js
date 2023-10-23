@@ -3,6 +3,8 @@ const LogicpoolCourses = require('../models/courses');
 const LogicpoolModules = require('../models/modules');
 const LogicpoolModuleTopics = require('../models/moduleTopics');
 const LogicpoolBatches = require('../models/batches');
+const LogicpoolStudents = require('../models/students');
+const LogicpoolUsers = require('../models/users');
 // const bcrypt = require('bcrypt');
 // const jwt = require('jsonwebtoken');
 
@@ -299,7 +301,7 @@ async function deleteTopic(req, res) {
     }
 }
 
-//For Batches
+///////For Batches
 
 async function addBatch(req, res) {
     try {
@@ -398,6 +400,64 @@ async function deleteBatch(req, res) {
     }
 }
 
+///////For Students
+
+async function addStudent(req, res) {
+    try {
+        let incomingFirstName = req.body.firstName;
+        let incomingLastName = req.body.lastName;
+        let incomingEmailId = req.body.emailId;
+        let incomingContactNumber = req.body.contactNumber;
+        let incomingBatchName = req.body.batch;
+        let incomingCourseName = req.body.course;
+        let incomingStatus = req.body.status;
+
+        const newStudentDetails = new LogicpoolStudents({
+            firstName: incomingFirstName,
+            lastName: incomingLastName,
+            emailId: incomingEmailId,
+            contactNumber: incomingContactNumber,
+            batch: incomingBatchName,
+            course: incomingCourseName,
+            status: incomingStatus
+            
+        });
+
+        const newUserDetails = new LogicpoolUsers({
+            
+            emailId: incomingEmailId,
+            password: incomingFirstName,
+            Role_Id: 3,
+            status: incomingStatus
+        });
+
+        await newStudentDetails.save();
+        await newUserDetails.save();
+
+        console.log("New Student Record Created");
+        res.status(201).json({message: "New Student Record Created" , status: true});
+        
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({Message: err.message});
+        
+    }
+
+}
+
+async function getAllStudent(req, res) {
+
+    try {
+        let allStudentRecords = await LogicpoolStudents.find();
+
+        if(allStudentRecords.length > 0) return res.status(200).json({allStudentRecords , status: true});
+        else return res.status(404).json({message: 'No Student Record Found in the Database' , status: false});    
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({message: `${err.message}`}); 
+    }
+}
+
 
 
 
@@ -435,7 +495,8 @@ module.exports = {
     deleteBatch,
 
     //Students
-
+    addStudent,
+    getAllStudent
 
     //Trainers
 

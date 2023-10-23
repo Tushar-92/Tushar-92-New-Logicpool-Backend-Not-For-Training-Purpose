@@ -50,6 +50,11 @@ router.put('/updateBatch/:id' , adminController.updateBatch);
 
 router.delete('/deleteBatch/:id' , adminController.deleteBatch);
 
+////End Points For Students
+router.post('/addStudent' , adminController.addStudent);
+
+router.get('/getAllStudent' , adminController.getAllStudent);
+
 
 
 
