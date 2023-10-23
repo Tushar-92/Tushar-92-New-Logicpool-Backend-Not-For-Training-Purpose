@@ -6,7 +6,7 @@ const LogicpoolModulesSchema = new Schema ({
   moduleName: {
     type: String ,
     required: true,
-    unique: true
+    // unique: true
   } ,
 
   courseName: {

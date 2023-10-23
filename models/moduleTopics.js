@@ -16,7 +16,7 @@ const LogicpoolModuleTopicsSchema = new Schema ({
   topicName: {
     type: String ,
     require: true,
-    unique: true
+    // unique: true
   }
 
 });
