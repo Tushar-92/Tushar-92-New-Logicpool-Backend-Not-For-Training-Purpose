@@ -3,13 +3,13 @@ const Schema = mongoose.Schema;
 
 const LogicpoolBatchesSchema = new Schema ({
 
-  name: {
+  batchName: {
     type: String ,
     required: true,
     // unique: true //can't be unique otherwise other batches of same name for different courses can't be added.
   },
 
-  course: {
+  courseName: {
     type: String ,
     required: true
   },

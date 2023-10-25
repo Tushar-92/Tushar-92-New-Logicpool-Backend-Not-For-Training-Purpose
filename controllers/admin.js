@@ -305,14 +305,14 @@ async function deleteTopic(req, res) {
 
 async function addBatch(req, res) {
     try {
-        let incomingBatchName = req.body.name;
-        let incomingCourseName = req.body.course;
+        let incomingBatchName = req.body.batchName;
+        let incomingCourseName = req.body.courseName;
         let incomingStartingDateOfBatch = req.body.startDate;
         let incomingEndingDateOfBatch = req.body.endDate;
 
         const newBatch = new LogicpoolBatches({
-            name: incomingBatchName,
-            course: incomingCourseName,
+            batchName: incomingBatchName,
+            courseName: incomingCourseName,
             startDate: incomingStartingDateOfBatch,
             endDate: incomingEndingDateOfBatch
         });
@@ -345,9 +345,9 @@ async function getAllBatch(req, res) {
 async function getBatch(req, res) { //This method will return batches available for a particular course
     try {
 
-        let incomingCourseName = req.body.course;
+        let incomingCourseName = req.body.courseName;
 
-        let batches = await LogicpoolBatches.find({course: incomingCourseName}); //This will return all available batches for the required course
+        let batches = await LogicpoolBatches.find({courseName: incomingCourseName}); //This will return all available batches for the required course
 
         if(batches.length > 0) return res.status(200).json({batches , status: "true"});
         else return res.status(404).json({message: `No Batches Available for the ${incomingCourseName} course in the Database`  , status: "false"});
@@ -408,8 +408,8 @@ async function addStudent(req, res) {
         let incomingLastName = req.body.lastName;
         let incomingEmailId = req.body.emailId;
         let incomingContactNumber = req.body.contactNumber;
-        let incomingBatchName = req.body.batch;
-        let incomingCourseName = req.body.course;
+        let incomingBatchName = req.body.batchName;
+        let incomingCourseName = req.body.courseName;
         let incomingStatus = req.body.status;
 
         const newStudentDetails = new LogicpoolStudents({
@@ -417,8 +417,8 @@ async function addStudent(req, res) {
             lastName: incomingLastName,
             emailId: incomingEmailId,
             contactNumber: incomingContactNumber,
-            batch: incomingBatchName,
-            course: incomingCourseName,
+            batchName: incomingBatchName,
+            courseName: incomingCourseName,
             status: incomingStatus
             
         });

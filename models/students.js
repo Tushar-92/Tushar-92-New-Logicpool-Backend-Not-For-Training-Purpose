@@ -24,12 +24,12 @@ const LogicpoolStudentsSchema = new Schema ({
     required: true,
   },
 
-  batch: {
+  batchName: {
     type: String ,
     required: true,
   }, 
 
-  course: {
+  courseName: {
     type: String ,
     required: true,
   },
