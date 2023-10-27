@@ -55,6 +55,10 @@ router.post('/addStudent' , adminController.addStudent);
 
 router.get('/getAllStudent' , adminController.getAllStudent);
 
+router.put('/updateStudent/:id' , adminController.updateStudent);
+
+router.delete('/deleteStudent/:id' , adminController.deleteStudent);
+
 
 
 

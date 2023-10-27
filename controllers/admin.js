@@ -403,6 +403,7 @@ async function deleteBatch(req, res) {
 ///////For Students
 
 async function addStudent(req, res) {
+    
     try {
         let incomingFirstName = req.body.firstName;
         let incomingLastName = req.body.lastName;
@@ -412,6 +413,26 @@ async function addStudent(req, res) {
         let incomingCourseName = req.body.courseName;
         let incomingStatus = req.body.status;
 
+
+        if(incomingStatus==="Active") incomingStatus = true;
+        else incomingStatus = false;
+
+
+
+        const newUserDetails = new LogicpoolUsers({
+            emailId: incomingEmailId,
+            password: incomingFirstName,
+            Role: 'Student',
+            status: incomingStatus
+        });
+
+        let newUser = await newUserDetails.save();
+        // console.log(newUser);
+        // console.log((newUser._id).valueOf());
+        let userIdOfnewUser = (newUser._id).valueOf();
+
+
+
         const newStudentDetails = new LogicpoolStudents({
             firstName: incomingFirstName,
             lastName: incomingLastName,
@@ -419,20 +440,13 @@ async function addStudent(req, res) {
             contactNumber: incomingContactNumber,
             batchName: incomingBatchName,
             courseName: incomingCourseName,
-            status: incomingStatus
-            
-        });
-
-        const newUserDetails = new LogicpoolUsers({
-            
-            emailId: incomingEmailId,
-            password: incomingFirstName,
-            Role_Id: 3,
-            status: incomingStatus
+            status: incomingStatus,
+            userID: userIdOfnewUser            
         });
 
         await newStudentDetails.save();
-        await newUserDetails.save();
+        
+
 
         console.log("New Student Record Created");
         res.status(201).json({message: "New Student Record Created" , status: true});
@@ -456,6 +470,62 @@ async function getAllStudent(req, res) {
         console.log(err);
         res.status(500).json({message: `${err.message}`}); 
     }
+}
+
+async function updateStudent(req, res){
+    try {
+
+        let incomingFirstName = req.body.firstName;
+        let incomingLastName = req.body.lastName;
+        let incomingEmailId = req.body.emailId;
+        let incomingContactNumber = req.body.contactNumber;
+        let incomingBatchName = req.body.batchName;
+        let incomingCourseName = req.body.courseName;
+        let incomingStatus = req.body.status;
+        let incomingUserObjectIdForUserTable = req.body.userId;
+
+        
+        let updatedStudent = await LogicpoolStudents.findByIdAndUpdate(
+            { _id : req.params.id },
+
+            {
+                firstName: incomingFirstName,
+                lastName: incomingLastName,
+                emailId: incomingEmailId,
+                contactNumber: incomingContactNumber,
+                batchName: incomingBatchName,
+                courseName: incomingCourseName,
+                status: incomingStatus
+            },
+
+            {new: true}
+        );
+
+        
+        let updatedUser = await LogicpoolUsers.findByIdAndUpdate(
+            { _id : incomingUserObjectIdForUserTable },
+
+            {
+                emailId: incomingEmailId,
+                password: incomingFirstName,
+                Role: 'Student',
+                status: incomingStatus
+            },
+
+            {new: true}
+        );
+
+        console.log("Student Record Updated Successfully")
+        res.status(200).json({updatedStudent, updatedUser,status: true , message: 'Student Record Updated Successfully'});
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({message: `${err.message}`});
+    }
+
+}
+
+async function deleteStudent(req, res){
+
 }
 
 
@@ -496,7 +566,9 @@ module.exports = {
 
     //Students
     addStudent,
-    getAllStudent
+    getAllStudent,
+    updateStudent,
+    deleteStudent
 
     //Trainers
 

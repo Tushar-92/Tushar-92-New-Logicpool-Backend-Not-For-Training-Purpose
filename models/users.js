@@ -9,7 +9,7 @@ const LogicpoolUsersSchema = new Schema ({
     unique: true
   },
 
-  Role_Id: {
+  Role: {
     type: String ,
     required: true
   },
@@ -24,7 +24,11 @@ const LogicpoolUsersSchema = new Schema ({
     required: true
   }
 
-});
+},
+
+{ timestamps: true }
+
+);
 
 const LogicpoolUsers = mongoose.model("LogicpoolUsers" , LogicpoolUsersSchema)
 module.exports = LogicpoolUsers;

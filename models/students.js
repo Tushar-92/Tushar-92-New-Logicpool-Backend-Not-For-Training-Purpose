@@ -34,16 +34,21 @@ const LogicpoolStudentsSchema = new Schema ({
     required: true,
   },
 
-  // Role_Id: {
-  //   type: Number ,
-  // }, 
-
   status: { // active or not
     type: Boolean,
     required: true,
   },
+
+  userID: { //this will be the object id of this student from users table
+    type: String,
+    required: true
+  }
   
-});
+},
+
+{ timestamps: true }
+
+);
 
 const LogicpoolStudents = mongoose.model("LogicpoolStudents" , LogicpoolStudentsSchema )
 module.exports = LogicpoolStudents;
