@@ -525,6 +525,27 @@ async function updateStudent(req, res){
 }
 
 async function deleteStudent(req, res){
+    try {
+        
+        let studentDetails = await LogicpoolStudents.find({_id: req.params.id});
+        
+        if(studentDetails.length > 0) {
+            
+            let incomingUserObjectIdForUserTable = (studentDetails[0].userID);
+            console.log("Extracted userID is = " + studentDetails[0].userID);
+
+            await LogicpoolUsers.deleteOne({_id: incomingUserObjectIdForUserTable});
+            await LogicpoolStudents.deleteOne({_id: req.params.id});
+            res.status(200).json({ message: `Student_Id: ${req.params.id} is now deleted from the database`});
+        }else{
+            res.status(404).json({ message: `Student_Id: ${req.params.id} not found`});
+        }
+
+        
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({message: `${err.message}`});
+    }
 
 }
 
