@@ -23,17 +23,6 @@ const LogicpoolTrainersSchema = new Schema ({
         type: String ,
         required: true,
       },
-    
-    //   batchName: { //commented and kept bcz i think it can be used later
-    //     type: String ,
-    //     required: true,
-    //   }, 
-    
-    //   courseName: { //commented and kept bcz i think it can be used later
-    //     type: String ,
-    //     required: true,
-    //   },
-    
       status: { // active or not
         type: Boolean,
         required: true,

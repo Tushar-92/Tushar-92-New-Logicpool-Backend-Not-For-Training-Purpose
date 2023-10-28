@@ -485,6 +485,9 @@ async function updateStudent(req, res){
         let incomingStatus = req.body.status;
         let incomingUserObjectIdForUserTable = req.body.userId;
 
+        if(incomingStatus==="Active") incomingStatus = true;
+        else incomingStatus = false;
+
         
         let updatedStudent = await LogicpoolStudents.findByIdAndUpdate(
             { _id : req.params.id },
@@ -627,6 +630,9 @@ async function updateTrainer(req, res){
         let incomingStatus = req.body.status;
         let incomingUserObjectIdForUserTable = req.body.userId;
 
+        if(incomingStatus==="Active") incomingStatus = true;
+        else incomingStatus = false;
+
         
         let updatedTrainer = await LogicpoolTrainers.findByIdAndUpdate(
             { _id : req.params.id },
@@ -689,9 +695,6 @@ async function deleteTrainer(req, res){
     }
 
 }
-
-
-
 
 
 
