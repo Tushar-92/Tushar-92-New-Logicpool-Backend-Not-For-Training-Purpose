@@ -59,6 +59,14 @@ router.put('/updateStudent/:id' , adminController.updateStudent);
 
 router.delete('/deleteStudent/:id' , adminController.deleteStudent);
 
+////End Points For Trainers
+router.post('/addTrainer' , adminController.addTrainer);
+
+router.get('/getAllTrainer' , adminController.getAllTrainer);
+
+router.put('/updateTrainer/:id' , adminController.updateTrainer);
+
+router.delete('/deleteTrainer/:id' , adminController.deleteTrainer);
 
 
 

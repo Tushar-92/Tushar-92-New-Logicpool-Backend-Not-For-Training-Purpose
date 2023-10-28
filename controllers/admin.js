@@ -5,6 +5,7 @@ const LogicpoolModuleTopics = require('../models/moduleTopics');
 const LogicpoolBatches = require('../models/batches');
 const LogicpoolStudents = require('../models/students');
 const LogicpoolUsers = require('../models/users');
+const LogicpoolTrainers = require('../models/trainers');
 // const bcrypt = require('bcrypt');
 // const jwt = require('jsonwebtoken');
 
@@ -550,6 +551,148 @@ async function deleteStudent(req, res){
 }
 
 
+///////For Trainers
+async function addTrainer(req, res) {
+    
+    try {
+        let incomingFirstName = req.body.firstName;
+        let incomingLastName = req.body.lastName;
+        let incomingEmailId = req.body.emailId;
+        let incomingContactNumber = req.body.contactNumber;
+        let incomingStatus = req.body.status;
+
+
+        if(incomingStatus==="Active") incomingStatus = true;
+        else incomingStatus = false;
+
+
+
+        const newUserDetails = new LogicpoolUsers({
+            emailId: incomingEmailId,
+            password: incomingFirstName,
+            Role: 'Trainer',
+            status: incomingStatus
+        });
+
+        let newUser = await newUserDetails.save();
+        // console.log(newUser);
+        // console.log((newUser._id).valueOf());
+        let userIdOfnewUser = (newUser._id).valueOf();
+
+
+
+        const newTrainerDetails = new LogicpoolTrainers({
+            firstName: incomingFirstName,
+            lastName: incomingLastName,
+            emailId: incomingEmailId,
+            contactNumber: incomingContactNumber,
+            status: incomingStatus,
+            userID: userIdOfnewUser            
+        });
+
+        await newTrainerDetails.save();
+        
+
+        console.log("New Trainer Record Created");
+        res.status(201).json({message: "New Trainer Record Created" , status: true});
+        
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({Message: err.message});
+        
+    }
+
+}
+
+async function getAllTrainer(req, res) {
+
+    try {
+        let allTrainerRecords = await LogicpoolTrainers.find();
+
+        if(allTrainerRecords.length > 0) return res.status(200).json({allTrainerRecords , status: true});
+        else return res.status(404).json({message: 'No Trainer Record Found in the Database' , status: false});    
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({message: `${err.message}`}); 
+    }
+}
+
+async function updateTrainer(req, res){
+    try {
+
+        let incomingFirstName = req.body.firstName;
+        let incomingLastName = req.body.lastName;
+        let incomingEmailId = req.body.emailId;
+        let incomingContactNumber = req.body.contactNumber;
+        let incomingStatus = req.body.status;
+        let incomingUserObjectIdForUserTable = req.body.userId;
+
+        
+        let updatedTrainer = await LogicpoolTrainers.findByIdAndUpdate(
+            { _id : req.params.id },
+
+            {
+                firstName: incomingFirstName,
+                lastName: incomingLastName,
+                emailId: incomingEmailId,
+                contactNumber: incomingContactNumber,
+                status: incomingStatus
+            },
+
+            {new: true}
+        );
+
+        
+        let updatedUser = await LogicpoolUsers.findByIdAndUpdate(
+            { _id : incomingUserObjectIdForUserTable },
+
+            {
+                emailId: incomingEmailId,
+                password: incomingFirstName,
+                Role: 'Trainer',
+                status: incomingStatus
+            },
+
+            {new: true}
+        );
+
+        console.log("Trainer Record Updated Successfully")
+        res.status(200).json({updatedTrainer, updatedUser,status: true , message: 'Trainer Record Updated Successfully'});
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({message: `${err.message}`});
+    }
+
+}
+
+async function deleteTrainer(req, res){
+    try {
+        
+        let trainerDetails = await LogicpoolTrainers.find({_id: req.params.id});
+        
+        if(trainerDetails.length > 0) {
+            
+            let incomingUserObjectIdForUserTable = (trainerDetails[0].userID);
+            console.log("Extracted userID is = " + trainerDetails[0].userID);
+
+            await LogicpoolUsers.deleteOne({_id: incomingUserObjectIdForUserTable});
+            await LogicpoolTrainers.deleteOne({_id: req.params.id});
+            res.status(200).json({ message: `Trainer_Id: ${req.params.id} is now deleted from the database`});
+        }else{
+            res.status(404).json({ message: `Trainer_Id: ${req.params.id} not found`});
+        }
+
+        
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({message: `${err.message}`});
+    }
+
+}
+
+
+
+
 
 
 
@@ -589,13 +732,13 @@ module.exports = {
     addStudent,
     getAllStudent,
     updateStudent,
-    deleteStudent
+    deleteStudent,
 
     //Trainers
-
-
-
-
+    addTrainer,
+    getAllTrainer,
+    updateTrainer,
+    deleteTrainer
 
 
 }

@@ -3,48 +3,53 @@ const Schema = mongoose.Schema;
 
 const LogicpoolTrainersSchema = new Schema ({
     
-    firstName: {
+      firstName: {
         type: String ,
         required: true,
-    },
+      },
     
-    lastName: {
+      lastName: {
         type: String ,
         required: true,
-    },
-        
-    emailId: {
+      },
+    
+      emailId: {
         type: String ,
         required: true,
         unique: true
-    },
+      },
     
-    contactNumber: {
+      contactNumber: {
         type: String ,
-        required: true
-    },
-
-    Course: {
-        type: String ,
-    },
-    
-    Batch: {
-        type: String , 
         required: true,
-        unique: true,
-
-    },
-
-    Role_Id: {
-        type: String,
-    },
-
-    // Is_Active: {
-    //     type: Boolean,
+      },
+    
+    //   batchName: { //commented and kept bcz i think it can be used later
+    //     type: String ,
     //     required: true,
-    // }
+    //   }, 
+    
+    //   courseName: { //commented and kept bcz i think it can be used later
+    //     type: String ,
+    //     required: true,
+    //   },
+    
+      status: { // active or not
+        type: Boolean,
+        required: true,
+      },
+    
+      userID: { //this will be the object id of this trainer from users table
+        type: String,
+        required: true
+      }
+      
+    },
+    
+    { timestamps: true }
+    
 
-});
+);
 
 
 const LogicpoolTrainers = mongoose.model("LogicpoolTrainers" , LogicpoolTrainersSchema )
