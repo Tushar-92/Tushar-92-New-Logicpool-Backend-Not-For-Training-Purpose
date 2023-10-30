@@ -68,6 +68,15 @@ router.put('/updateTrainer/:id' , adminController.updateTrainer);
 
 router.delete('/deleteTrainer/:id' , adminController.deleteTrainer);
 
+////End Points For Batch-Trainer-Module
+router.post('/addBatchTrainerModule' , adminController.addBatchTrainerModue);
+
+router.get('/getAllBatchTrainerModule' , adminController.getAllBatchTrainerModule);
+
+// router.put('/updateTrainer/:id' , adminController.updateTrainer);
+
+// router.delete('/deleteTrainer/:id' , adminController.deleteTrainer);
+
 
 
 module.exports = router;

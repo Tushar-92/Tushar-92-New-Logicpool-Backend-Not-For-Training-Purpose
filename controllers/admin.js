@@ -6,6 +6,7 @@ const LogicpoolBatches = require('../models/batches');
 const LogicpoolStudents = require('../models/students');
 const LogicpoolUsers = require('../models/users');
 const LogicpoolTrainers = require('../models/trainers');
+const LogicpoolBatches_Module_Trainer = require('../models/batch_trainer_module');
 // const bcrypt = require('bcrypt');
 // const jwt = require('jsonwebtoken');
 
@@ -697,6 +698,56 @@ async function deleteTrainer(req, res){
 }
 
 
+///////For Batch-Trainer-Module
+
+async function addBatchTrainerModue(req, res) {
+    try {
+
+        let incomingBatchName = req.body.batchName;
+        let incomingCourseName = req.body.courseName;
+        let incomingModuleName = req.body.moduleName;
+        let incomingTrainersFullName = req.body.trainerFullName;
+        let incomingStartingDateOfBatch = req.body.startDate;
+        let incomingEndingDateOfBatch = req.body.endDate;
+        
+
+                
+        const newDetails = new LogicpoolBatches_Module_Trainer({
+            batchName: incomingBatchName,
+            courseName: incomingCourseName,
+            moduleName: incomingModuleName,
+            trainerFullName: incomingTrainersFullName,
+            startDate: incomingStartingDateOfBatch,
+            endDate: incomingEndingDateOfBatch
+        });
+    
+        await newDetails.save();
+        console.log(`New Details For Batch-Trainer-Module is now Added`);
+        res.status(201).json({message: "New Details For Batch-Trainer-Module is now Added", status: true});
+      
+             
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({Message: error.message});
+    }
+}
+
+
+async function getAllBatchTrainerModule(req, res) {
+    try {
+
+        let details = await LogicpoolBatches_Module_Trainer.find(); //This will return all
+
+        if(details.length > 0) return res.status(200).json({details , status: true});
+        else return res.status(404).json({message: 'No Details of Batch-Trainer-Module Available in the Database' , status: false});
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({message: `${err.message}`});
+        
+    }
+}
+
 
 
 
@@ -741,7 +792,11 @@ module.exports = {
     addTrainer,
     getAllTrainer,
     updateTrainer,
-    deleteTrainer
+    deleteTrainer,
+
+    //Batch-Trainer-Module
+    addBatchTrainerModue,
+    getAllBatchTrainerModule
 
 
 }
