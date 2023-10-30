@@ -73,9 +73,9 @@ router.post('/addBatchTrainerModule' , adminController.addBatchTrainerModue);
 
 router.get('/getAllBatchTrainerModule' , adminController.getAllBatchTrainerModule);
 
-// router.put('/updateTrainer/:id' , adminController.updateTrainer);
+router.put('/updateBatchTrainerModule/:id' , adminController.updateBatchTrainerModule);
 
-// router.delete('/deleteTrainer/:id' , adminController.deleteTrainer);
+router.delete('/deleteBatchTrainerModule/:id' , adminController.deleteBatchTrainerModule);
 
 
 

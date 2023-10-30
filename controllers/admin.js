@@ -749,6 +749,53 @@ async function getAllBatchTrainerModule(req, res) {
 }
 
 
+async function updateBatchTrainerModule(req, res) {
+    try {
+
+        let incomingBatchName = req.body.batchName;
+        let incomingCourseName = req.body.courseName;
+        let incomingModuleName = req.body.moduleName;
+        let incomingTrainersFullName = req.body.trainerFullName;
+        let incomingStartingDateOfBatch = req.body.startDate;
+        let incomingEndingDateOfBatch = req.body.endDate;
+        
+
+        let updatedDetails = await LogicpoolBatches_Module_Trainer.findByIdAndUpdate(
+            { _id : req.params.id },
+
+            {
+                batchName: incomingBatchName,
+                courseName: incomingCourseName,
+                moduleName: incomingModuleName,
+                trainerFullName: incomingTrainersFullName,
+                startDate: incomingStartingDateOfBatch,
+                endDate: incomingEndingDateOfBatch
+            },
+
+            {new: true}
+        );
+
+        // console.log(updatedDetails);
+        res.status(200).json({updatedDetails , status: true , message: 'Batch-Trainer-Module Updated Successfully'});
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({message: `${err.message}`});
+    }
+}
+
+
+async function deleteBatchTrainerModule(req, res) {
+    try {
+        await LogicpoolBatches_Module_Trainer.deleteOne({ _id : req.params.id});
+        console.log(`Batch-Trainer-Module _id: ${req.params.id} is now deleted from the database`);
+        res.status(200).json({message: `Batch-Trainer-Module _id: ${req.params.id} is now deleted from the database`});        
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({message: `${err.message}`});
+    }
+}
+
+
 
 
 
@@ -796,7 +843,9 @@ module.exports = {
 
     //Batch-Trainer-Module
     addBatchTrainerModue,
-    getAllBatchTrainerModule
+    getAllBatchTrainerModule,
+    updateBatchTrainerModule,
+    deleteBatchTrainerModule
 
 
 }

@@ -25,7 +25,11 @@ const LogicpoolBatchesSchema = new Schema ({
   }
 
   
-});
+},
+
+{ timestamps: true }
+
+);
 
 const LogicpoolBatches = mongoose.model("LogicpoolBatches" , LogicpoolBatchesSchema)
 module.exports = LogicpoolBatches;

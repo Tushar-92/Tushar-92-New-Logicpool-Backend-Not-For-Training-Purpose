@@ -15,7 +15,11 @@ const LogicpoolCoursesSchema = new Schema ({
   },
 
   
-});
+},
+
+{ timestamps: true }
+
+);
 
 const LogicpoolCourses = mongoose.model("LogicpoolCourses" , LogicpoolCoursesSchema)
 module.exports = LogicpoolCourses;

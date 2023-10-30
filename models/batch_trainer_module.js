@@ -35,7 +35,11 @@ const LogicpoolBatch_Module_Trainer_Schema = new Schema ({
   }
 
   
-});
+},
+
+{ timestamps: true }
+
+);
 
 const LogicpoolBatches_Module_Trainer = mongoose.model("LogicpoolBatches_Module_Trainer" , LogicpoolBatch_Module_Trainer_Schema)
 module.exports = LogicpoolBatches_Module_Trainer;

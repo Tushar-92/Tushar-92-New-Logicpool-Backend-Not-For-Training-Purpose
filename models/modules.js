@@ -14,7 +14,10 @@ const LogicpoolModulesSchema = new Schema ({
     required: true
   }
 
-});
+},
+
+{ timestamps: true }
+);
 
 const LogicpoolModules = mongoose.model("LogicpoolModules" , LogicpoolModulesSchema)
 module.exports = LogicpoolModules;

@@ -13,7 +13,11 @@ const LogicpoolRolesSchema = new Schema ({
     required: true,
   },
 
-});
+} , 
+
+{ timestamps: true }
+
+);
 
 const LogicpoolRoles = mongoose.model("LogicpoolRoles" , LogicpoolRolesSchema )
 module.exports = LogicpoolRoles;

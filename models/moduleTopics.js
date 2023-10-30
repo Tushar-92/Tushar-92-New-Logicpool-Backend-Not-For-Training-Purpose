@@ -19,7 +19,11 @@ const LogicpoolModuleTopicsSchema = new Schema ({
     // unique: true
   }
 
-});
+},
+
+{ timestamps: true }
+
+);
 
 const LogicpoolModuleTopics = mongoose.model("LogicpoolModuleTopics" , LogicpoolModuleTopicsSchema)
 module.exports = LogicpoolModuleTopics;
