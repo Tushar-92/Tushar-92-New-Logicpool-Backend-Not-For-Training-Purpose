@@ -132,11 +132,20 @@ async function getModule(req, res) {
     try {
         
         let incomingModuleName = req.body.moduleName;
-        
-        let module = await LogicpoolModules.find({moduleName: incomingModuleName});
-        
-        if(module.length > 0) return res.status(200).json({module , status: "true"});
-        else return res.status(404).json({message: 'Module Not Found' , status: "false"});
+        let incomingCourseName = req.body.courseName;
+
+        if(!incomingCourseName) {
+            let module = await LogicpoolModules.find({moduleName: incomingModuleName});
+            if(module.length > 0) return res.status(200).json({module , status: "true"});
+            else return res.status(404).json({message: 'Module Not Found' , status: "false"});
+        }else if(!incomingModuleName){
+            let module = await LogicpoolModules.find({courseName: incomingCourseName});
+            if(module.length > 0) return res.status(200).json({module , status: "true"});
+            else return res.status(404).json({message: 'Module Not Found' , status: "false"});
+        }
+
+        //Agar dono bhej diya then below will be returned.
+        return res.status(404).json({message:"Bad Parameter , Please send courseName or moduleName but not both at once"});
                
     }catch (err) {
         console.log(err);
