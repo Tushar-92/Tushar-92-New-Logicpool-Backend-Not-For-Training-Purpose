@@ -127,25 +127,45 @@ async function addModule(req, res) {
     }
 }
 
+//Below Functionality is commented bcz we were unable to send body data in get request from Angular
+// async function getModule(req, res) {
+
+//     try {
+        
+//         let incomingModuleName = req.body.moduleName;
+//         let incomingCourseName = req.body.courseName;
+
+//         if(!incomingCourseName) {
+//             let module = await LogicpoolModules.find({moduleName: incomingModuleName});
+//             if(module.length > 0) return res.status(200).json({module , status: "true"});
+//             else return res.status(404).json({message: 'Module Not Found' , status: "false"});
+//         }else if(!incomingModuleName){
+//             let module = await LogicpoolModules.find({courseName: incomingCourseName});
+//             if(module.length > 0) return res.status(200).json({module , status: "true"});
+//             else return res.status(404).json({message: 'Module Not Found' , status: "false"});
+//         }
+
+//         //Agar dono bhej diya then below will be returned.
+//         return res.status(404).json({message:"Bad Parameter , Please send courseName or moduleName but not both at once"});
+               
+//     }catch (err) {
+//         console.log(err);
+//         res.status(500).json({message: `${err.message}`});
+//     }
+// }
+
+
+//Now since we are unable to send body data in get request now we are sending data rquired as params in url
 async function getModule(req, res) {
 
     try {
         
-        let incomingModuleName = req.body.moduleName;
-        let incomingCourseName = req.body.courseName;
+        let incomingCourseName = req.params.courseName;
+        console.log(incomingCourseName);
 
-        if(!incomingCourseName) {
-            let module = await LogicpoolModules.find({moduleName: incomingModuleName});
-            if(module.length > 0) return res.status(200).json({module , status: "true"});
-            else return res.status(404).json({message: 'Module Not Found' , status: "false"});
-        }else if(!incomingModuleName){
-            let module = await LogicpoolModules.find({courseName: incomingCourseName});
-            if(module.length > 0) return res.status(200).json({module , status: "true"});
-            else return res.status(404).json({message: 'Module Not Found' , status: "false"});
-        }
-
-        //Agar dono bhej diya then below will be returned.
-        return res.status(404).json({message:"Bad Parameter , Please send courseName or moduleName but not both at once"});
+        let module = await LogicpoolModules.find({courseName: incomingCourseName});
+        if(module.length > 0) return res.status(200).json({module , status: "true"});
+        else return res.status(404).json({message: 'Module Not Found' , status: "false"});
                
     }catch (err) {
         console.log(err);
@@ -356,10 +376,9 @@ async function getAllBatch(req, res) {
 async function getBatch(req, res) { //This method will return batches available for a particular course
     try {
 
-        let incomingCourseName = req.body.courseName;
-
+        let incomingCourseName = req.params.courseName;
         let batches = await LogicpoolBatches.find({courseName: incomingCourseName}); //This will return all available batches for the required course
-
+        
         if(batches.length > 0) return res.status(200).json({batches , status: "true"});
         else return res.status(404).json({message: `No Batches Available for the ${incomingCourseName} course in the Database`  , status: "false"});
 

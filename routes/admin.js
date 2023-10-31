@@ -18,7 +18,7 @@ router.delete('/deleteCourse/:id' , adminController.deleteCourse);
 ////End Points For Modules
 router.post('/addModule' , adminController.addModule);
 
-router.get('/getModule' , adminController.getModule);
+router.get('/getModule/:courseName' , adminController.getModule);
 
 router.get('/getAllModule' , adminController.getAllModule);
 
@@ -42,7 +42,7 @@ router.delete('/deleteTopic/:id' , adminController.deleteTopic);
 ////End Points For Batches
 router.post('/addBatch' , adminController.addBatch);
 
-router.get('/getBatch' , adminController.getBatch);
+router.get('/getBatch/:courseName' , adminController.getBatch);
 
 router.get('/getAllBatch' , adminController.getAllBatch);
 
