@@ -42,6 +42,8 @@ router.delete('/deleteTopic/:id' , adminController.deleteTopic);
 ////End Points For Batches
 router.post('/addBatch' , adminController.addBatch);
 
+router.get('/getBatchById/:id' , adminController.getBatchById);
+
 router.get('/getBatch/:courseName' , adminController.getBatch);
 
 router.get('/getAllBatch' , adminController.getAllBatch);

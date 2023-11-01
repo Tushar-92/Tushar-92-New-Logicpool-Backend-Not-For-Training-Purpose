@@ -389,6 +389,21 @@ async function getBatch(req, res) { //This method will return batches available 
     }
 }
 
+async function getBatchById(req, res) { //This method will return that one batch details available for a particulat requested batch _id
+    try {
+
+        let batch = await LogicpoolBatches.find({ _id: req.params.id}); //This will return all available batches for the required course
+        
+        if(batch.length > 0) return res.status(200).json({batch , status: "true"});
+        else return res.status(404).json({message: `No Batches Available for the requested id ${req.params.id} in the Database`  , status: "false"});
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({message: `${err.message}`});
+        
+    }
+}
+
 async function updateBatch(req, res) {
     try {
 
@@ -853,6 +868,7 @@ module.exports = {
     //Batches
     addBatch,
     getBatch,
+    getBatchById,
     getAllBatch,
     updateBatch,
     deleteBatch,
