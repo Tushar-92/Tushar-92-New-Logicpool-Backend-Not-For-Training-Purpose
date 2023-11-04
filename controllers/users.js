@@ -1,6 +1,6 @@
 
 const LogicpoolUsers = require('../models/users');
-// const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 // const jwt = require('jsonwebtoken');
 
 async function userRegistration(req, res) {

@@ -7,7 +7,7 @@ const LogicpoolStudents = require('../models/students');
 const LogicpoolUsers = require('../models/users');
 const LogicpoolTrainers = require('../models/trainers');
 const LogicpoolBatches_Module_Trainer = require('../models/batch_trainer_module');
-// const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 // const jwt = require('jsonwebtoken');
 
 
@@ -69,9 +69,16 @@ async function getAllCourse(req, res) {
 async function updateCourse(req, res) {
     try {
 
+        //first let find the old courseName of the incoming _id and keep it aside as it will be used later on in updateMany for filtering the data
+        let currentCourseDetails = await LogicpoolCourses.find({ _id: req.params.id});
+        let currentCourseName = currentCourseDetails[0].courseName;
+        console.log(currentCourseName);
+
+        
+        //Now first update the courseName in the Course Table.Bcz this is the main table and everywhere courseName will be fetched from this table only.
         let incomingNewCourseName = req.body.courseName;
         let incomingNewCourseDuration = req.body.courseDuration;
-
+                
         let updatedCourse = await LogicpoolCourses.findByIdAndUpdate(
             { _id : req.params.id },
 
@@ -83,6 +90,21 @@ async function updateCourse(req, res) {
             {new: true}
         );
 
+
+        //Now at the same time we have to update courseName in everyTable, so we will do this one by one as below
+        //// 1) Updating in the Modules Table
+        await LogicpoolModules.updateMany( { courseName: currentCourseName }, { "$set": { courseName: incomingNewCourseName }});
+        //// 2) Updating in the Module-Topics Table
+        await LogicpoolModuleTopics.updateMany( { courseName: currentCourseName }, { "$set": { courseName: incomingNewCourseName }});
+        //// 3) Updating in the Batches Table
+        await LogicpoolBatches.updateMany( { courseName: currentCourseName }, { "$set": { courseName: incomingNewCourseName }});
+        //// 4) Updating in the Students Table
+        await LogicpoolStudents.updateMany( { courseName: currentCourseName }, { "$set": { courseName: incomingNewCourseName }});
+        //// 2) Updating in the Batch_Trainer_Module Table
+        await LogicpoolBatches_Module_Trainer.updateMany( { courseName: currentCourseName }, { "$set": { courseName: incomingNewCourseName }});
+        
+        
+        
         console.log(updatedCourse);
         res.status(200).json({updatedCourse , status: true , message: 'Course Updated Successfully'})
     } catch (err) {
@@ -458,26 +480,29 @@ async function addStudent(req, res) {
         let incomingCourseName = req.body.courseName;
         let incomingStatus = req.body.status;
 
-
-        // if(incomingStatus==="Active") incomingStatus = true;
-        // else incomingStatus = false;
-
+        //Lets hash the password and save the details now, for the first time we are hasing the first name as password
+        //now lets start encrypting the password
 
 
-        const newUserDetails = new LogicpoolUsers({
+
+        //Now first saving the user details into user table
+        newUserDetails = new LogicpoolUsers({
             emailId: incomingEmailId,
             password: incomingFirstName,
             Role: 'Student',
             status: incomingStatus
-        });
+    
+        })
 
         let newUser = await newUserDetails.save();
         // console.log(newUser);
         // console.log((newUser._id).valueOf());
+        console.log(newUser);
+        console.log((newUser._id).valueOf());
+
         let userIdOfnewUser = (newUser._id).valueOf();
 
-
-
+        //now saving the student details in student table
         const newStudentDetails = new LogicpoolStudents({
             firstName: incomingFirstName,
             lastName: incomingLastName,
@@ -490,11 +515,11 @@ async function addStudent(req, res) {
         });
 
         await newStudentDetails.save();
-        
 
-
+                   
         console.log("New Student Record Created");
-        res.status(201).json({message: "New Student Record Created" , status: true});
+        res.status(201).json({message: "New Student Record Created" , status: true});       
+        
         
     } catch (err) {
         console.log(err);
@@ -529,9 +554,7 @@ async function updateStudent(req, res){
         let incomingStatus = req.body.status;
         let incomingUserObjectIdForUserTable = req.body.userId;
 
-        // if(incomingStatus==="Active") incomingStatus = true;
-        // else incomingStatus = false;
-
+        
         
         let updatedStudent = await LogicpoolStudents.findByIdAndUpdate(
             { _id : req.params.id },
@@ -609,10 +632,6 @@ async function addTrainer(req, res) {
         let incomingStatus = req.body.status;
 
 
-        // if(incomingStatus==="Active") incomingStatus = true;
-        // else incomingStatus = false;
-
-
 
         const newUserDetails = new LogicpoolUsers({
             emailId: incomingEmailId,
@@ -673,9 +692,6 @@ async function updateTrainer(req, res){
         let incomingContactNumber = req.body.contactNumber;
         let incomingStatus = req.body.status;
         let incomingUserObjectIdForUserTable = req.body.userId;
-
-        // if(incomingStatus==="Active") incomingStatus = true;
-        // else incomingStatus = false;
 
         
         let updatedTrainer = await LogicpoolTrainers.findByIdAndUpdate(
