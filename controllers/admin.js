@@ -72,7 +72,7 @@ async function updateCourse(req, res) {
         //first let find the old courseName of the incoming _id and keep it aside as it will be used later on in updateMany for filtering the data
         let currentCourseDetails = await LogicpoolCourses.find({ _id: req.params.id});
         let currentCourseName = currentCourseDetails[0].courseName;
-        console.log(currentCourseName);
+        // console.log(currentCourseName);
 
         
         //Now first update the courseName in the Course Table.Bcz this is the main table and everywhere courseName will be fetched from this table only.
@@ -100,7 +100,7 @@ async function updateCourse(req, res) {
         await LogicpoolBatches.updateMany( { courseName: currentCourseName }, { "$set": { courseName: incomingNewCourseName }});
         //// 4) Updating in the Students Table
         await LogicpoolStudents.updateMany( { courseName: currentCourseName }, { "$set": { courseName: incomingNewCourseName }});
-        //// 2) Updating in the Batch_Trainer_Module Table
+        //// 5) Updating in the Batch_Trainer_Module Table
         await LogicpoolBatches_Module_Trainer.updateMany( { courseName: currentCourseName }, { "$set": { courseName: incomingNewCourseName }});
         
         
@@ -213,8 +213,13 @@ async function getAllModule(req, res) {
 async function updateModule(req, res) {
     try {
 
+        //first let find the old moduleName of the incoming _id and keep it aside as it will be used later on in updateMany for filtering the data
+        let currentModuleDetails = await LogicpoolModules.find({ _id: req.params.id});
+        let currentModuleName = currentModuleDetails[0].moduleName;
+        // console.log(currentModuleName);
+
         let incomingNewCourseName = req.body.courseName;
-        let incomingModuleName = req.body.moduleName;
+        let incomingNewModuleName = req.body.moduleName;
         
 
         let updatedModule = await LogicpoolModules.findByIdAndUpdate(
@@ -222,12 +227,18 @@ async function updateModule(req, res) {
 
             {
                 courseName: incomingNewCourseName,
-                moduleName: incomingModuleName
+                moduleName: incomingNewModuleName
             },
 
             {new: true}
         );
 
+        //Now at the same time we have to update moduleName in everyTable, so we will do this one by one as below
+        //// 1) Updating in the Module-Topic Table
+        await LogicpoolModuleTopics.updateMany( { moduleName: currentModuleName }, { "$set": { moduleName: incomingNewModuleName }});
+        //// 2) Updating in the Batch_Trainer_Module Table
+        await LogicpoolBatches_Module_Trainer.updateMany( { moduleName: currentModuleName }, { "$set": { moduleName: incomingNewModuleName }});
+        
         console.log(updatedModule);
         res.status(200).json({updatedModule , status: true , message: 'Module Updated Successfully'})
     } catch (err) {
@@ -429,6 +440,11 @@ async function getBatchById(req, res) { //This method will return that one batch
 async function updateBatch(req, res) {
     try {
 
+        //first let find the old batchName of the incoming _id and keep it aside as it will be used later on in updateMany for filtering the data
+        let currentBatchDetails = await LogicpoolBatches.find({ _id: req.params.id});
+        let currentBatchName = currentBatchDetails[0].batchName;
+        // console.log(currentBatchName);
+
         let incomingBatchName = req.body.name;
         let incomingCourseName = req.body.course;
         let incomingStartingDateOfBatch = req.body.startDate;
@@ -448,6 +464,13 @@ async function updateBatch(req, res) {
             {new: true}
         );
 
+        //Now at the same time we have to update batchName in everyTable, so we will do this one by one as below
+        //// 1) Updating in the Student Table
+        await LogicpoolStudents.updateMany( { batchName: currentBatchName }, { "$set": { batchName: incomingBatchName }});
+        //// 2) Updating in the Batch_Trainer_Module Table
+        await LogicpoolBatches_Module_Trainer.updateMany( { batchName: currentBatchName }, { "$set": { batchName: incomingBatchName }});
+
+        
         console.log(updatedBatch);
         res.status(200).json({updatedBatch , status: true , message: 'Batch Updated Successfully'});
     } catch (err) {
