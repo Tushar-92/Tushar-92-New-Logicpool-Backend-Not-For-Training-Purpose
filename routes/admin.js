@@ -80,5 +80,9 @@ router.put('/updateBatchTrainerModule/:id' , adminController.updateBatchTrainerM
 router.delete('/deleteBatchTrainerModule/:id' , adminController.deleteBatchTrainerModule);
 
 
+////Admin Dashboard
+router.get('/getDashboardData' , adminController.getTotalStudents_Trainers);
+
+
 
 module.exports = router;

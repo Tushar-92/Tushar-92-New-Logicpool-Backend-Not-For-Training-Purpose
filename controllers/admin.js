@@ -878,6 +878,27 @@ async function deleteBatchTrainerModule(req, res) {
 }
 
 
+//For Admin Dashboard
+
+async function getTotalStudents_Trainers (req, res) {
+
+    let totalNoOfStudents = await LogicpoolUsers.find({Role: "Student"}).count();
+    let totalNoOfTrainers = await LogicpoolUsers.find({Role: "Trainer"}).count();
+    let totalNoOfCourses = await LogicpoolCourses.find().count();
+
+    console.log(totalNoOfStudents);
+    console.log(totalNoOfTrainers);
+    console.log(totalNoOfCourses);
+    res.status(200).json({totalNoOfStudents, totalNoOfTrainers, totalNoOfCourses});
+
+}
+
+
+async function getTotalCourses () {
+
+}
+
+
 
 
 
@@ -928,7 +949,10 @@ module.exports = {
     addBatchTrainerModue,
     getAllBatchTrainerModule,
     updateBatchTrainerModule,
-    deleteBatchTrainerModule
+    deleteBatchTrainerModule,
 
+    //Admin Dashboard
+    getTotalStudents_Trainers,
+    getTotalCourses
 
 }
