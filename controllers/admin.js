@@ -894,14 +894,6 @@ async function getTotalStudents_Trainers (req, res) {
 }
 
 
-async function getTotalCourses () {
-
-}
-
-
-
-
-
 
 module.exports = {
     //Courses
