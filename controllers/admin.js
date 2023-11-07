@@ -446,8 +446,8 @@ async function updateBatch(req, res) {
         let currentBatchName = currentBatchDetails[0].batchName;
         // console.log(currentBatchName);
 
-        let incomingBatchName = req.body.name;
-        let incomingCourseName = req.body.course;
+        let incomingBatchName = req.body.batchName;
+        let incomingCourseName = req.body.courseName;
         let incomingStartingDateOfBatch = req.body.startDate;
         let incomingEndingDateOfBatch = req.body.endDate;
         

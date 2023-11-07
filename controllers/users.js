@@ -90,9 +90,27 @@ async function userLogin(req, res) {
 }
 
 async function changeUserPassword(req, res) {
-    let incomingNewPassword = req.body.password;
-
     
+    try {
+        let incomingNewPassword = req.body.password;
+
+        ////Lets hash the incoming new password 
+        let saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(incomingNewPassword, saltRounds);
+        console.log("Hashed Password We Got IS ==> " + hashedPassword);
+
+        await LogicpoolUsers.findByIdAndUpdate(
+            { _id: req.params.id}, 
+            { password: hashedPassword}, 
+            {new: true}
+        );
+
+        res.status(201).json({message: 'New Password Set Successfully' , status: true});
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({message: `${err.message}`});
+    }
 
     
 }

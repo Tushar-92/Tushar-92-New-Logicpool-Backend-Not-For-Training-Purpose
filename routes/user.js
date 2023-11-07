@@ -7,4 +7,6 @@ router.post('/register' , userController.userRegistration);
 
 router.post('/login' , userController.userLogin);
 
+router.patch('/changePassword/:id' , userController.changeUserPassword);
+
 module.exports = router;
