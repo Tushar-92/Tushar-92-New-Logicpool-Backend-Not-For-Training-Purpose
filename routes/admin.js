@@ -44,6 +44,8 @@ router.post('/addBatch' , adminController.addBatch);
 
 router.get('/getBatchById/:id' , adminController.getBatchById);
 
+router.get('/getBatchDetailsByBatchName/:batchName' , adminController.getBatchDetailsByBatchName);
+
 router.get('/getBatch/:courseName' , adminController.getBatch);
 
 router.get('/getAllBatch' , adminController.getAllBatch);
