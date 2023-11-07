@@ -7,4 +7,6 @@ router.get('/getStudent/:id' , studentController.getStudent);
 
 router.get('/getBatchmates/:courseName/:batchName' , studentController.getBatchmates);
 
+router.get('/getTrainers/:courseName/:batchName' , studentController.getTrainers);
+
 module.exports = router;
