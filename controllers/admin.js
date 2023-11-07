@@ -7,6 +7,7 @@ const LogicpoolStudents = require('../models/students');
 const LogicpoolUsers = require('../models/users');
 const LogicpoolTrainers = require('../models/trainers');
 const LogicpoolBatches_Module_Trainer = require('../models/batch_trainer_module');
+const LogicpoolCalenderEvents = require('../models/calender-events');
 const bcrypt = require('bcrypt');
 // const jwt = require('jsonwebtoken');
 
@@ -503,15 +504,16 @@ async function addStudent(req, res) {
         let incomingCourseName = req.body.courseName;
         let incomingStatus = req.body.status;
 
-        //Lets hash the password and save the details now, for the first time we are hasing the first name as password
-        //now lets start encrypting the password
+        ////Lets hash the password , for the first time we are hasing the first name as password
+        let saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(incomingFirstName, saltRounds);
+        // console.log("Hashed Password We Got IS ==> " + hashedPassword);
 
 
-
-        //Now first saving the user details into user table
+        ////Now first saving the user details into user table
         newUserDetails = new LogicpoolUsers({
             emailId: incomingEmailId,
-            password: incomingFirstName,
+            password: hashedPassword,
             Role: 'Student',
             status: incomingStatus
     
@@ -654,11 +656,14 @@ async function addTrainer(req, res) {
         let incomingContactNumber = req.body.contactNumber;
         let incomingStatus = req.body.status;
 
-
+        ////Lets hash the password , for the first time we are hasing the first name as password
+        let saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(incomingFirstName, saltRounds);
+        // console.log("Hashed Password We Got IS ==> " + hashedPassword);
 
         const newUserDetails = new LogicpoolUsers({
             emailId: incomingEmailId,
-            password: incomingFirstName,
+            password: hashedPassword,
             Role: 'Trainer',
             status: incomingStatus
         });
@@ -893,6 +898,60 @@ async function getTotalStudents_Trainers (req, res) {
 
 }
 
+//For Calender
+
+async function addEvent(req, res) {
+    try {
+    let incomingEventName = req.body.eventName;
+    let incomingEventDate = req.body.eventDate;
+    let incomingEventType = req.body.eventType;
+    let incomingBatchName = req.body.batchName;
+    let incomingCourseName = req.body.courseName;
+
+    const newEventDetail = new LogicpoolCalenderEvents ({
+        eventName: incomingEventName,
+        eventDate: incomingEventDate,
+        eventType: incomingEventType,
+        batchName: incomingBatchName,
+        courseName: incomingCourseName
+    });
+
+    await newEventDetail.save();
+
+    console.log("New Calender Event Created");
+    res.status(201).json({message: "New Calender Event Created" , status: true}); 
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({Message: err.message});    
+    }
+
+}
+
+async function getAllEvent(req, res) {
+    try {
+
+        let details = await LogicpoolCalenderEvents.find(); //This will return all events
+
+        if(details.length > 0) return res.status(200).json({details , status: true});
+        else return res.status(404).json({message: 'No Calender Events Available in the Database' , status: false});
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({message: `${err.message}`});
+        
+    }
+    
+}
+
+async function updateEvent(req, res) {
+    
+}
+
+async function deleteEvent(req, res) {
+    
+}
+
 
 
 module.exports = {
@@ -945,6 +1004,11 @@ module.exports = {
 
     //Admin Dashboard
     getTotalStudents_Trainers,
-    getTotalCourses
+
+    //For Calender
+    addEvent,
+    getAllEvent,
+    updateEvent,
+    deleteEvent
 
 }

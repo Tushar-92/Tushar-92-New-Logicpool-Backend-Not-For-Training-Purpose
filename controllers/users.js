@@ -60,23 +60,24 @@ async function userLogin(req, res) {
         
         if(user.length > 0) {
 
-            // bcrypt.compare(incomingPassword , user[0].password , (err, result) => {
-            //     if(err) {
-            //         throw new Error('Something went wrong');
-            //     }
+            bcrypt.compare(incomingPassword , user[0].password , (err, result) => {
+                if(err) {
+                    throw new Error('Something went wrong');
+                }
                 
-            //     if(result === true) {
-            //         console.log(user[0].id); // Just for self analysis
-            //         console.log(user[0]._id); // Just for self analysis
-            //         return res.status(200).json({message: 'User logged in successfully'}); //Here only we have to generate jwt token i.e token: generateAccessToken(user[0].id, user[0].Name , user[0].ispremiumuser)}
+                if(result === true) {
+                    // console.log(user[0].id); // Just for self analysis
+                    // console.log(user[0]._id); // Just for self analysis
+                    return res.status(200).json({ user , message: 'User logged in successfully' , status: true }); //Here only we have to generate jwt token i.e token: generateAccessToken(user[0].id, user[0].Name , user[0].ispremiumuser)}
 
-            //     } else {
-            //         return res.status(401).json({message: 'Incorrect Password'});
-            //     }
-            // })
+                } else {
+                    return res.status(401).json({message: 'Incorrect Password' , status: false});
+                }
+            })
 
-            if(incomingPassword === user[0].password) return res.status(200).json({message: 'User logged in successfully' , status: "true"});
-            else return res.status(401).json({message: 'Incorrect Password' , status:"false"});
+            //Below is for password matching without using bcrypt
+            // if(incomingPassword === user[0].password) return res.status(200).json({message: 'User logged in successfully' , status: "true"});
+            // else return res.status(401).json({message: 'Incorrect Password' , status:"false"});
         }else {
             return res.status(404).json({message: 'User Not Found'});   
         }
@@ -88,9 +89,18 @@ async function userLogin(req, res) {
     }
 }
 
+async function changeUserPassword(req, res) {
+    let incomingNewPassword = req.body.password;
+
+    
+
+    
+}
+
 
 module.exports = {
     userRegistration,
-    userLogin
+    userLogin,
+    changeUserPassword
     
 }

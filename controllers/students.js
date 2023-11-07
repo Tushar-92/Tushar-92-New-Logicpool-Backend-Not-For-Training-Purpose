@@ -94,6 +94,5 @@ async function studentLogin(req, res) {
 
 module.exports = {
     studentRegistration,
-    // getStudentDetails,
     studentLogin
 }

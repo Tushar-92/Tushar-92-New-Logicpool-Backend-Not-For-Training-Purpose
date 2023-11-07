@@ -1,100 +1,106 @@
 
 const LogicpoolTrainers = require('../models/trainers');
+const LogicpoolCalenderEvents = require('../models/calender-events');
 // const bcrypt = require('bcrypt');
 // const jwt = require('jsonwebtoken');
 
-async function trainerRegistration(req, res) {
-    try {
+// async function trainerLogin(req, res) {
 
-        let incomingFirst_Name =  req.body.First_Name;
-        let incomingLast_Name =  req.body.Last_Name;
-        let incomingEmail_Id =  req.body.Email_Id;
-        let incomingContact_Number = req.body.Contact_Number;
-        let incomingModule_ID = req.body.Module_ID;
-        let incomingPassword =  req.body.Password;
+//     try {
         
-        const saltrounds = 10;
+//         let incomingEmail_Id =  req.body.Email_Id;
+//         let incomingPassword =  req.body.Password;
+        
+//         let trainer = await LogicpoolTrainers.find({Email_Id: incomingEmail_Id});
+        
+//         // if(trainer.length > 0) {
 
-        // bcrypt.hash(incomingPassword, saltrounds, async(error , hash) => {
+//             // bcrypt.compare(incomingPassword , trainer[0].Password , (err, result) => {
+//             //     if(err) {
+//             //         throw new Error('Something went wrong');
+//             //     }
+                
+//             //     if(result === true) {
+//             //         console.log(trainer[0].id); // Just for self analysis
+//             //         console.log(trainer[0]._id); // Just for self analysis
+//             //         return res.status(200).json({message: 'Trainer logged in successfully'}); //Here only we have to generate jwt token i.e token: generateAccessToken(user[0].id, user[0].Name , user[0].ispremiumuser)}
+
+//             //     } else {
+//             //         return res.status(401).json({message: 'Password is Incorrect'});
+//             //     }
+//             // })
             
-        //     console.log(error);
-            
-        //     const newTrainer = new LogicpoolTrainers({
-        //         First_Name : incomingFirst_Name,
-        //         Last_Name: incomingLast_Name,
-        //         Email_Id: incomingEmail_Id,
-        //         Contact_Number: incomingContact_Number,
-        //         Module_ID: incomingModule_ID,
-        //         Password: hash
-        //     });
+//             // } else {
+//             //     return res.status(404).json({message: 'Trainer Does Not Exists'});
+//             // }
 
-        //     await newTrainer.save();
-        //     console.log('Trainer Created');
-        //     res.status(201).json({message: 'Successfully Created New Trainer Record'});
-        
-        // })
-        
-        const newTrainer = new LogicpoolTrainers({
-            First_Name : incomingFirst_Name,
-            Last_Name: incomingLast_Name,
-            Email_Id: incomingEmail_Id,
-            Contact_Number: incomingContact_Number,
-            Module_ID: incomingModule_ID,
-            Password: incomingPassword
-        });
+//             res.status(200).json(trainer);
     
-        await newTrainer.save();
-        console.log('Trainer Created');
-        res.status(201).json({message: 'Successfully Created New Trainer Record'});        
+//         }catch (err) {
+//         console.log(err);
+//         res.status(500).json({message: `${err.message}`});
+//     }
 
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({Message: error.message});
+// }
+
+
+async function addEvent(req, res) {
+    try {
+    let incomingEventName = req.body.eventName;
+    let incomingEventDate = req.body.eventDate;
+    let incomingEventType = req.body.eventType;
+    let incomingBatchName = req.body.batchName;
+    let incomingCourseName = req.body.courseName;
+
+    const newEventDetail = new LogicpoolCalenderEvents ({
+        eventName: incomingEventName,
+        eventDate: incomingEventDate,
+        eventType: incomingEventType,
+        batchName: incomingBatchName,
+        courseName: incomingCourseName
+    });
+
+    await newEventDetail.save();
+
+    console.log("New Calender Event Created");
+    res.status(201).json({message: "New Calender Event Created" , status: true}); 
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({Message: err.message});    
     }
+
 }
 
-
-async function trainerLogin(req, res) {
-
+async function getAllEvent(req, res) {
     try {
-        
-        let incomingEmail_Id =  req.body.Email_Id;
-        let incomingPassword =  req.body.Password;
-        
-        let trainer = await LogicpoolTrainers.find({Email_Id: incomingEmail_Id});
-        
-        // if(trainer.length > 0) {
 
-            // bcrypt.compare(incomingPassword , trainer[0].Password , (err, result) => {
-            //     if(err) {
-            //         throw new Error('Something went wrong');
-            //     }
-                
-            //     if(result === true) {
-            //         console.log(trainer[0].id); // Just for self analysis
-            //         console.log(trainer[0]._id); // Just for self analysis
-            //         return res.status(200).json({message: 'Trainer logged in successfully'}); //Here only we have to generate jwt token i.e token: generateAccessToken(user[0].id, user[0].Name , user[0].ispremiumuser)}
+        let details = await LogicpoolCalenderEvents.find(); //This will return all events
 
-            //     } else {
-            //         return res.status(401).json({message: 'Password is Incorrect'});
-            //     }
-            // })
-            
-            // } else {
-            //     return res.status(404).json({message: 'Trainer Does Not Exists'});
-            // }
+        if(details.length > 0) return res.status(200).json({details , status: true});
+        else return res.status(404).json({message: 'No Calender Events Available in the Database' , status: false});
 
-            res.status(200).json(trainer);
-    
-        }catch (err) {
+    } catch (err) {
         console.log(err);
         res.status(500).json({message: `${err.message}`});
+        
     }
-
+    
 }
+
+async function updateEvent(req, res) {
+    
+}
+
+async function deleteEvent(req, res) {
+    
+}
+
+
 
 
 module.exports = {
-    trainerRegistration,
-    trainerLogin
+    // trainerLogin,
+    addEvent,
+    getAllEvent
 }

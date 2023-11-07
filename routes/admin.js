@@ -61,6 +61,7 @@ router.put('/updateStudent/:id' , adminController.updateStudent);
 
 router.delete('/deleteStudent/:id' , adminController.deleteStudent);
 
+
 ////End Points For Trainers
 router.post('/addTrainer' , adminController.addTrainer);
 
@@ -80,8 +81,13 @@ router.put('/updateBatchTrainerModule/:id' , adminController.updateBatchTrainerM
 router.delete('/deleteBatchTrainerModule/:id' , adminController.deleteBatchTrainerModule);
 
 
-////Admin Dashboard
+////End Points for Admin Dashboard
 router.get('/getDashboardData' , adminController.getTotalStudents_Trainers);
+
+////End Points for Admin Calender
+router.post('/addEvent' , adminController.addEvent);
+
+router.get('/getAllEvent' , adminController.getAllEvent);
 
 
 
