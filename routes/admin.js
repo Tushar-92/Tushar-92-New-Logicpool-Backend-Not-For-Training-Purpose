@@ -90,5 +90,9 @@ router.post('/addEvent' , adminController.addEvent);
 router.get('/getAllEvent' , adminController.getAllEvent);
 
 
+////End Points for ading Admin Details
+router.post('/addAdmin' , adminController.addAdmin);
+
+
 
 module.exports = router;

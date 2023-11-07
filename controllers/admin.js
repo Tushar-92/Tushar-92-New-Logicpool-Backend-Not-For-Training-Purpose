@@ -8,6 +8,7 @@ const LogicpoolUsers = require('../models/users');
 const LogicpoolTrainers = require('../models/trainers');
 const LogicpoolBatches_Module_Trainer = require('../models/batch_trainer_module');
 const LogicpoolCalenderEvents = require('../models/calender-events');
+const LogicpoolAdmins = require('../models/admins');
 const bcrypt = require('bcrypt');
 // const jwt = require('jsonwebtoken');
 
@@ -953,6 +954,63 @@ async function deleteEvent(req, res) {
 }
 
 
+////For Hard Coded Admin Data
+async function addAdmin(req, res) {
+    
+    try {
+        let incomingFirstName = req.body.firstName;
+        let incomingLastName = req.body.lastName;
+        let incomingEmailId = req.body.emailId;
+        let incomingContactNumber = req.body.contactNumber;
+        let incomingStatus = req.body.status;
+
+        ////Lets hash the password , for the first time we are hasing the first name as password
+        let saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(incomingFirstName, saltRounds);
+        // console.log("Hashed Password We Got IS ==> " + hashedPassword);
+
+
+        ////Now first saving the user details into user table
+        newAdminDetails = new LogicpoolAdmins({
+            emailId: incomingEmailId,
+            password: hashedPassword,
+            Role: 'Admin',
+            status: incomingStatus
+    
+        })
+
+        let newAdmin = await newAdminDetails.save();
+    
+        // console.log(newAdmin);
+        // console.log((newAdmin._id).valueOf());
+
+        let userIdOfnewUser = (newAdmin._id).valueOf();
+
+        //now saving the student details in student table
+        const newAdminDetails = new LogicpoolAdmins({
+            firstName: incomingFirstName,
+            lastName: incomingLastName,
+            emailId: incomingEmailId,
+            contactNumber: incomingContactNumber,
+            status: incomingStatus,
+            userID: userIdOfnewUser            
+        });
+
+        await newAdminDetails.save();
+                   
+        console.log("New Admin Record Created");
+        res.status(201).json({message: "New Admin Record Created" , status: true});       
+        
+        
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({Message: err.message});
+        
+    }
+
+}
+
+
 
 module.exports = {
     //Courses
@@ -1009,6 +1067,9 @@ module.exports = {
     addEvent,
     getAllEvent,
     updateEvent,
-    deleteEvent
+    deleteEvent,
+
+    //For Admin Hard Coded Data
+    addAdmin
 
 }

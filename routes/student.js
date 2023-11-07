@@ -3,10 +3,8 @@ const express = require('express');
 const router = express.Router();
 const studentController = require('../controllers/students');
 
-router.post('/register' , studentController.studentRegistration);
+router.get('/getStudent/:id' , studentController.getStudent);
 
-// router.get('/:id' , studentController.getStudentDetails);
-
-router.get('/login' , studentController.studentLogin);
+router.get('/getBatchmates/:courseName/:batchName' , studentController.getBatchmates);
 
 module.exports = router;
