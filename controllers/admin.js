@@ -986,7 +986,7 @@ async function addAdmin(req, res) {
 
 
         ////Now first saving the user details into user table
-        newAdminDetails = new LogicpoolAdmins({
+        const newAdminUserDetails = new LogicpoolAdmins({
             emailId: incomingEmailId,
             password: hashedPassword,
             Role: 'Admin',
@@ -994,7 +994,7 @@ async function addAdmin(req, res) {
     
         })
 
-        let newAdmin = await newAdminDetails.save();
+        let newAdmin = await newAdminUserDetails.save();
     
         // console.log(newAdmin);
         // console.log((newAdmin._id).valueOf());
