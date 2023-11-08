@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const trainerController = require('../controllers/trainers');
+const assignmentsController = require('../controllers/assignment');
 
 // router.post('/register' , trainerController.trainerRegistration);
 
@@ -11,5 +12,8 @@ const trainerController = require('../controllers/trainers');
 router.post('/addEvent' , trainerController.addEvent);
 
 router.get('/getAllEvent' , trainerController.getAllEvent);
+
+////End Points for Assignment
+router.post('/addAssignment' , assignmentsController.addAssignment);
 
 module.exports = router;
