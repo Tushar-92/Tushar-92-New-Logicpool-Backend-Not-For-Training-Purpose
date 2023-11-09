@@ -472,8 +472,8 @@ async function updateBatch(req, res) {
             { _id : req.params.id },
 
             {
-                name: incomingBatchName,
-                course: incomingCourseName,
+                batchName: incomingBatchName,
+                courseName: incomingCourseName,
                 startDate: incomingStartingDateOfBatch,
                 endDate: incomingEndingDateOfBatch
             },
@@ -576,7 +576,7 @@ async function getAllStudent(req, res) {
         let allStudentRecords = await LogicpoolStudents.find();
 
         if(allStudentRecords.length > 0) return res.status(200).json({allStudentRecords , status: true});
-        else return res.status(404).json({message: 'No Student Record Found in the Database' , status: false});    
+        else return res.status(404).json({message: 'No Student Record Found in the Database' , status: false , empty: true});    
     } catch (err) {
         console.log(err);
         res.status(500).json({message: `${err.message}`}); 
